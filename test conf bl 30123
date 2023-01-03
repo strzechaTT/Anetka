@@ -287,7 +287,8 @@
 
 /**
  * Two separate X-carriages with extruders that connect to a moving part
- * via a magnetic docking mechanism using movements and no solenoid
+ * via a magnetic docking mechanism using 
+s and no solenoid
  *
  * project   : https://www.thingiverse.com/thing:3080893
  * movements : https://youtu.be/0xCEiG9VS3k
@@ -1165,7 +1166,7 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 102 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 8000, 1000 }  // 030123 80,80,400,102
 
 /**
  * Default Max Feed Rate (linear=mm/s, rotational=°/s)
