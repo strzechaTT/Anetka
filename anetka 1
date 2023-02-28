@@ -88,7 +88,7 @@ serial: /dev/serial/by-id/usb-Klipper_Klipper_firmware_12345-if00
 
 [printer]
 kinematics: cartesian
-max_velocity: 400
+max_velocity: 50
 max_accel: 500
 max_z_velocity: 10
 max_z_accel: 100
