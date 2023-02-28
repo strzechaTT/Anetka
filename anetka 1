@@ -9,39 +9,39 @@ step_pin: P2.2
 dir_pin: P2.6
 enable_pin: !P2.1
 microsteps: 16
-rotation_distance: 40
+rotation_distance: 20
 endstop_pin: !P1.29
 position_endstop: 0
-position_max: 235
-homing_speed: 50
+position_max: 300
+homing_speed: 100
 
 [stepper_y]
 step_pin: P0.19
 dir_pin: P0.20
 enable_pin: !P2.8
 microsteps: 16
-rotation_distance: 40
+rotation_distance: 20
 endstop_pin: !P1.28
 position_endstop: 0
-position_max: 235
-homing_speed: 50
+position_max: 100
+homing_speed: 100
 
 [stepper_z]
 step_pin: P0.22
 dir_pin: !P2.11
 enable_pin: !P0.21
 microsteps: 16
-rotation_distance: 8
+rotation_distance: 4
 endstop_pin: !P1.27
 position_endstop: 0.0
-position_max: 300
+position_max: 350
 
 [extruder]
 step_pin: P2.13
 dir_pin: !P0.11
 enable_pin: !P2.12
 microsteps: 16
-rotation_distance: 33.500
+rotation_distance: 16.750  #33.500
 nozzle_diameter: 0.400
 filament_diameter: 1.750
 heater_pin: P2.7
@@ -52,7 +52,7 @@ pid_Kp: 22.2
 pid_Ki: 1.08
 pid_Kd: 114
 min_temp: 0
-max_temp: 260
+max_temp: 240
 
 #[extruder1]
 #step_pin: P1.15
@@ -85,86 +85,6 @@ max_velocity: 400
 max_accel: 500
 max_z_velocity: 10
 max_z_accel: 100
-
-
-########################################
-# TMC2208 configuration
-########################################
-
-#[tmc2208 stepper_x]
-#uart_pin: P1.10
-#run_current: 0.800
-#stealthchop_threshold: 999999
-#
-#[tmc2208 stepper_y]
-#uart_pin: P1.9
-#run_current: 0.800
-#stealthchop_threshold: 999999
-#
-#[tmc2208 stepper_z]
-#uart_pin: P1.8
-#run_current: 0.650
-#stealthchop_threshold: 999999
-#
-#[tmc2208 extruder]
-#uart_pin: P1.4
-#run_current: 0.800
-#stealthchop_threshold: 999999
-#
-#[tmc2208 extruder1]
-#uart_pin: P1.1
-#run_current: 0.800
-#stealthchop_threshold: 999999
-
-
-########################################
-# TMC2130 configuration
-########################################
-
-#[tmc2130 stepper_x]
-#cs_pin: P1.10
-#spi_software_miso_pin: P0.5
-#spi_software_mosi_pin: P1.17
-#spi_software_sclk_pin: P0.4
-#run_current: 0.800
-#stealthchop_threshold: 999999
-#diag1_pin: P1.29
-
-#[tmc2130 stepper_y]
-#cs_pin: P1.9
-#spi_software_miso_pin: P0.5
-#spi_software_mosi_pin: P1.17
-#spi_software_sclk_pin: P0.4
-#run_current: 0.800
-#stealthchop_threshold: 999999
-#diag1_pin: P1.28
-
-#[tmc2130 stepper_z]
-#cs_pin: P1.8
-#spi_software_miso_pin: P0.5
-#spi_software_mosi_pin: P1.17
-#spi_software_sclk_pin: P0.4
-#run_current: 0.650
-#stealthchop_threshold: 999999
-#diag1_pin: P1.27
-
-#[tmc2130 extruder]
-#cs_pin: P1.4
-#spi_software_miso_pin: P0.5
-#spi_software_mosi_pin: P1.17
-#spi_software_sclk_pin: P0.4
-#run_current: 0.800
-#stealthchop_threshold: 999999
-#diag1_pin: P1.26
-
-#[tmc2130 extruder1]
-#cs_pin: P1.1
-#spi_software_miso_pin: P0.5
-#spi_software_mosi_pin: P1.17
-#spi_software_sclk_pin: P0.4
-#run_current: 0.800
-#stealthchop_threshold: 999999
-#diag1_pin: P1.25
 
 
 ########################################
