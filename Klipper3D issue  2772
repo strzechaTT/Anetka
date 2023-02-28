@@ -1,0 +1,388 @@
+# This file contains common pin mappings for the BIGTREETECH SKR V1.4
+# board. To use this config, the firmware should be compiled for the
+# LPC1768.
+
+# See the example.cfg file for a description of available parameters.<
+
+[stepper_x]
+step_pin: P2.2
+dir_pin: !P2.6
+enable_pin: !P2.1
+step_distance: .0125
+endstop_pin: P1.29
+position_min: 3
+position_endstop: 3
+position_max: 255
+homing_speed: 100
+
+[tmc2208 stepper_x]
+uart_pin: P1.10
+microsteps: 16
+run_current: 0.800
+hold_current: 0.500
+stealthchop_threshold: 250
+
+[stepper_y]
+step_pin: P0.19
+dir_pin: !P0.20
+enable_pin: !P2.8
+step_distance: .0125
+endstop_pin: P1.28
+position_min: 0
+position_endstop: 0
+position_max: 235
+homing_speed: 100
+
+[tmc2208 stepper_y]
+uart_pin: P1.9
+microsteps: 16
+run_current: 0.800
+hold_current: 0.500
+stealthchop_threshold: 250
+
+[stepper_z]
+step_pin: P0.22
+dir_pin: P2.11
+enable_pin: !P0.21
+step_distance: .0025
+endstop_pin: probe:z_virtual_endstop
+position_min: -5
+position_max: 250
+
+[tmc2208 stepper_z]
+uart_pin: P1.8
+microsteps: 16
+run_current: 0.650
+hold_current: 0.450
+stealthchop_threshold: 30
+
+# This is the part cooling fan that plugs right in to the fan output marked 'FAN'
+[fan]
+pin: P2.3
+
+# Ender 3 stock heater fan wires into the second extruder heater output marked 'HE1'
+[heater_fan e0_fan]
+pin: P2.4
+heater: extruder
+heater_temp: 50.0
+fan_speed: 1.0
+
+# Ender 3 stock heater bed
+[heater_bed]
+heater_pin: P2.5
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: P0.25
+control: pid
+pid_Kp: 54.027
+pid_Ki: 0.770
+pid_Kd: 948.182
+min_temp: 0
+max_temp: 130
+
+[extruder]
+max_extrude_only_distance: 100.0
+step_pin: P2.13
+dir_pin: !P0.11
+enable_pin: !P2.12
+pressure_advance: 0.065
+pressure_advance_smooth_time: 0.010
+# Tune your Esteps just like in marlin except when you get a % under/over extrusion
+step_distance: 0.00712
+nozzle_diameter: 0.400
+filament_diameter: 1.750
+heater_pin: P2.7
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: P0.24
+control: pid
+pid_kp = 26.194
+pid_ki = 1.679
+pid_kd = 102.158
+min_temp: 0
+max_temp: 250
+
+[tmc2208 extruder]
+uart_pin: P1.4
+microsteps: 16
+run_current: 0.800
+hold_current: 0.500
+stealthchop_threshold: 5
+
+[mcu]
+serial: /dev/serial/by-id/usb-Klipper_lpc1768_181505058C115553D830C34A030000F5-if00
+
+[printer]
+kinematics: cartesian
+max_velocity: 300
+max_accel: 3000
+max_z_velocity: 5
+max_z_accel: 100
+
+###############################################
+##  Probing/Mesh
+###############################################
+
+[bltouch]
+sensor_pin: P0.10  # Pull-up (^ symbol) needed in open drain mode
+control_pin: P2.0
+# Some BLTouch V3 and many clones apparently require this, though mine didnt:
+pin_up_touch_mode_reports_triggered: False
+#flavor: genuine_smart_3.1
+x_offset: -48
+y_offset: -15
+z_offset: 1.4
+pin_move_time: 1
+
+
+[bed_mesh]
+speed: 250
+horizontal_move_z: 8
+mesh_min: 20,15
+mesh_max: 205,215
+probe_count: 3,3
+fade_start: 1.0
+mesh_pps: 2,2
+
+[safe_z_home]
+home_xy_position: 155,120
+speed: 80.0
+z_hop: 10.0
+z_hop_speed: 10.0
+
+[gcode_macro G29]
+gcode:
+    BED_MESH_CALIBRATE
+
+[pause_resume]
+
+[gcode_macro M600]
+gcode:
+	PAUSE
+	CHANGE_FILAMENT_START
+
+[gcode_macro CHANGE_FILAMENT_START]
+gcode:
+	SAVE_GCODE_STATE NAME=M600_state
+	G91
+	G1 E-.8 F2700
+	G1 Z10
+	G90
+	G1 X50 Y0 F3000
+	G91
+	G1 E-5 F300
+
+[gcode_macro CHANGE_FILAMENT_END]
+gcode:
+	G91
+	RESTORE_GCODE_STATE NAME=M600_state
+	RESUME
+	
+
+[respond]
+default_type: echo
+
+
+########################################
+# Optional LCD configuration
+########################################
+
+# Ender 3 stock display plugs in to the EXP1 port
+[display]
+lcd_type: st7920
+encoder_pins: ^P1.20, ^P1.18
+click_pin: ^!P0.28
+cs_pin: P1.22
+sid_pin: P1.23
+sclk_pin: P1.21
+
+# This adds a screw tilt adjust command that probes certain points on the bed and recommends new bed screw positions (turn clockwise this much etc)
+[screws_tilt_adjust]
+screw1: 50,15
+screw1_name: Front left screw
+screw2: 50,235
+screw2_name: Rear left screw
+screw3: 245,15
+screw3_name: Front right screw
+screw4: 245,235
+screw4_name: Rear right screw
+horizontal_move_z: 10
+speed: 250
+screw_thread: CW-M3
+
+[menu __main]
+type = list
+name = Main Menu
+items =
+	__tune
+	__octoprint
+	__sdcard
+	__control
+	__calibration
+	__temp
+	__filament
+	__prepare
+
+[menu __calibration]
+type = list
+name = Calibration
+items = 
+	__calibration_home_all_axes
+	__calibration_bed_screws_adjust
+	__calibration_bed_mesh_calibrate
+	__calibration_screws_calculate
+	__calibration_probe_calibrate
+	__calibration_probe_accuracy
+	__general_firmware_restart
+
+[menu __calibration_accept]
+type = command
+name = Accept
+gcode = ACCEPT
+
+[menu __calibration_abort]
+type = command
+name = Abort
+gcode = ABORT
+action = back
+
+[menu __calibration_screws_calculate]
+type = command
+name = Screw tilt calculate
+gcode = 
+	G28
+	SCREWS_TILT_CALCULATE
+
+[menu __calibration_bed_screws_adjust]
+type = list
+name = Adjust screws
+enter_gcode = 
+	G28
+	BED_SCREWS_ADJUST
+show_back = False
+items = 
+	__calibration_accept
+	__calibration_bed_screws_adjust_adjusted
+	__calibration_save_config
+	__calibration_abort
+
+[menu __calibration_probe_accuracy]
+type = command
+name = Test accuracy
+gcode = 
+	G28
+	G1 X164 Y134 Z10 F6000
+	PROBE_ACCURACY
+
+[menu __calibration_save_config]
+type = command
+name = Save config
+gcode = SAVE_CONFIG
+
+[menu __general_firmware_restart]
+type = command
+name = Restart firmware
+gcode = FIRMWARE_RESTART
+
+[menu __calibration_home_all_axes]
+type = command
+name = Home XYZ
+gcode = G28
+
+[menu __calibration_bed_screws_adjust_adjusted]
+type = command
+name = Adjusted
+gcode = ADJUSTED
+
+[menu __calibration_probe_calibrate]
+type = list
+show_back = False
+name = Adjust Z offset
+enter_gcode = 
+	G28
+	G0 Z10 F6000
+	PROBE_CALIBRATE
+items = 
+	__calibration__toolhead_zpos
+	__calibration_probe_calibrate_testz_minus, __calibration_probe_calibrate_testz_plus
+	__calibration_probe_calibrate_testz_minus_minus, __calibration_probe_calibrate_testz_plus_plus
+	__calibration_probe_calibrate_testz_minus_1, __calibration_probe_calibrate_testz_plus_1
+	__calibration_probe_calibrate_testz_minus_point_1, __calibration_probe_calibrate_testz_plus_point_1
+	__calibration_accept
+	__calibration_save_config
+	__calibration_abort
+
+[menu __calibration__toolhead_zpos]
+type = item
+width = 16
+name = "Z = {0:.3f}"
+cursor = \x20
+parameter = toolhead.zpos
+
+[menu __calibration_probe_calibrate_testz_minus]
+cursor = \x20
+type = command
+width = 7
+name = "   -"
+gcode = TESTZ Z=-
+
+[menu __calibration_probe_calibrate_testz_plus]
+cursor = \x20
+type = command
+name = "   +"
+width = 7
+gcode = TESTZ Z=+
+
+[menu __calibration_probe_calibrate_testz_minus_minus]
+cursor = \x20
+type = command
+name = "   --"
+width = 7
+gcode = TESTZ Z=--
+
+[menu __calibration_probe_calibrate_testz_plus_plus]
+cursor = \x20
+type = command
+name = "   ++"
+width = 7
+gcode = TESTZ Z=++
+
+[menu __calibration_probe_calibrate_testz_minus_1]
+cursor = \x20
+type = command
+name = "  -1.0"
+width = 7
+gcode = TESTZ Z=-1
+
+[menu __calibration_probe_calibrate_testz_plus_1]
+cursor = \x20
+type = command
+name = "  +1.0"
+width = 7
+gcode = TESTZ Z=+1
+
+[menu __calibration_probe_calibrate_testz_minus_point_1]
+cursor = \x20
+type = command
+name = "  -0.1"
+width = 7
+gcode = TESTZ Z=-0.1
+
+[menu __calibration_probe_calibrate_testz_plus_point_1]
+cursor = \x20
+type = command
+name = "  +0.1"
+width = 7
+gcode = TESTZ Z=+0.1
+
+[menu __calibration_bed_mesh_calibrate]
+type = command
+name = Generate bed mesh
+width = 18
+show_back = False
+gcode = 
+	G28
+	BED_MESH_CALIBRATE
+	SAVE_CONFIG+
+
+#*# <---------------------- SAVE_CONFIG ---------------------->
+#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+#*#
