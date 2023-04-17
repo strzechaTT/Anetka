@@ -1,0 +1,184 @@
+[bltouch]
+sensor_pin: P0.10 #Change pin to match your printer
+control_pin: P2.0  #Change pin to match your printer
+x_offset: 60 #Change offset to match your printer
+y_offset: 0 #Change offset to match your printer
+#z_offset: 0 #Change offset to match your printer
+#stow_on_each_sample: False  
+#probe_with_touch_mode: True
+pin_move_time: 2
+#pin_up_reports_not_triggered : True
+#pin_up_touch_mode_reports_triggered : False
+
+[bed_mesh]
+speed: 100
+horizontal_move_z: 10
+mesh_min: 45 , 45 #Change coordinates to match your printer
+mesh_max: 270, 270 #Change coordinates to match your printer
+probe_count:4,4 #Change number of X,Y probe points
+algorithm: bicubic
+fade_start: 1
+fade_end: 10
+fade_target: 0
+
+[safe_z_home]
+home_xy_position: 150,150# Change coordinates to the center of your print bed
+speed: 100
+z_hop: 10                 
+z_hop_speed: 20
+
+[virtual_sdcard]
+path: ~/gcode_files
+
+[stepper_x]
+step_pin: P2.2
+dir_pin: !P2.6
+enable_pin: !P2.1
+microsteps: 16
+rotation_distance: 80
+endstop_pin: P1.29
+position_endstop: -20
+position_min: -20
+position_max: 300
+homing_speed: 100
+
+[stepper_y]
+step_pin: P0.19
+dir_pin: !P0.20
+enable_pin: !P2.8
+microsteps: 16
+rotation_distance: 80
+endstop_pin: P1.28
+position_endstop: -6
+position_min: -6
+position_max: 300
+homing_speed: 100
+
+[stepper_z]
+step_pin: P0.22
+dir_pin: !P2.11
+enable_pin: !P0.21
+microsteps: 16
+rotation_distance: 16
+endstop_pin: P1.27
+#endstop_pin: probe:z_virtual_endstop
+#position_endstop: 0
+position_min: -1
+position_max: 350
+
+[stepper_z1]
+step_pin: P1.15
+dir_pin: !P1.14
+enable_pin: !P1.16
+microsteps: 16
+rotation_distance: 16
+
+[extruder]
+step_pin: P2.13
+dir_pin: P0.11
+enable_pin: !P2.12
+microsteps: 16
+rotation_distance: 60.000  #33.500
+nozzle_diameter: 0.400
+filament_diameter: 1.750
+heater_pin: P2.7
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: P0.24
+#control: pid
+
+min_temp: 0
+max_temp: 250
+
+#pid_Kp=28.195 
+#pid_Ki=1.446 
+#pid_Kd=137.449
+
+[heater_bed]
+heater_pin: P2.5
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: P0.25
+#control: pid
+#pid_Kp: 54.027
+#pid_Ki: 0.770
+#pid_Kd: 948.182
+min_temp: 0
+max_temp: 100
+
+[fan]
+pin: P2.3
+
+[mcu]
+serial: /dev/serial/by-id/usb-Klipper_lpc1768_1530010C81A0C895E53F4161C12000F5-if00
+
+[printer]
+kinematics: cartesian
+max_velocity: 50
+max_accel: 200
+max_z_velocity: 10
+max_z_accel: 100
+
+
+
+######################################################################
+# Fysetc Mini 12864Panel v2.1 (with neopixel backlight leds)
+######################################################################
+
+[display]
+lcd_type: uc1701
+cs_pin: EXP1_3
+a0_pin: EXP1_4
+rst_pin: EXP1_5
+contrast: 63
+encoder_pins: ^EXP2_5, ^EXP2_3
+click_pin: ^!EXP1_2
+## Some micro-controller boards may require an spi bus to be specified:
+#spi_bus: spi
+## Alternatively, some micro-controller boards may work with software spi:
+#spi_software_miso_pin: EXP2_1
+#spi_software_mosi_pin: EXP2_6
+#spi_software_sclk_pin: EXP2_2
+
+[output_pin beeper]
+pin: EXP1_1
+
+[neopixel fysetc_mini12864]
+pin: EXP1_6
+chain_count: 3
+color_order: RGB
+initial_RED: 0.4
+initial_GREEN: 0.4
+initial_BLUE: 0.4
+
+
+[board_pins]
+aliases:
+    # EXP1 header
+    EXP1_1=P1.30, EXP1_3=P1.18, EXP1_5=P1.20, EXP1_7=P1.22, EXP1_9=<GND>,
+    EXP1_2=P0.28, EXP1_4=P1.19, EXP1_6=P1.21, EXP1_8=P1.23, EXP1_10=<5V>,
+    # EXP2 header
+    EXP2_1=P0.17, EXP2_3=P3.26, EXP2_5=P3.25, EXP2_7=P1.31, EXP2_9=<GND>,
+    EXP2_2=P0.15, EXP2_4=P0.16, EXP2_6=P0.18, EXP2_8=<RST>, EXP2_10=<NC>
+    # Pins EXP2_1, EXP2_6, EXP2_2 are also MISO, MOSI, SCK of bus "ssp0"
+
+# See the sample-lcd.cfg file for definitions of common LCD displays.
+
+#*# <---------------------- SAVE_CONFIG ---------------------->
+#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+#*#
+#*# [extruder]
+#*# control = pid
+#*# pid_kp = 27.828
+#*# pid_ki = 1.427
+#*# pid_kd = 135.662
+#*#
+#*# [heater_bed]
+#*# control = pid
+#*# pid_kp = 67.938
+#*# pid_ki = 0.528
+#*# pid_kd = 2185.904
+#*#
+#*# [stepper_z]
+#*# position_endstop = -0.420
+#*#
+#*# [bltouch]
+#*# z_offset = 2.100
