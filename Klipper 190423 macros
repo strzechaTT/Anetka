@@ -1,0 +1,603 @@
+# This file contains common pin mappings for the BIGTREETECH SKR V1.4
+# board. To use this config, the firmware should be compiled for the
+# LPC1768 or LPC1769(Turbo).
+# See docs/Config_Reference.md for a description of parameters.
+[bltouch]
+sensor_pin: P0.10 #Change pin to match your printer
+control_pin: P2.0  #Change pin to match your printer
+x_offset: 60 #Change offset to match your printer
+y_offset: -3 #Change offset to match your printer
+#z_offset: 0 #Change offset to match your printer
+#stow_on_each_sample: False  
+#probe_with_touch_mode: True
+#pin_move_time: 2
+#pin_up_reports_not_triggered : True
+#pin_up_touch_mode_reports_triggered : False
+
+[bed_mesh]
+speed: 120
+horizontal_move_z: 8
+mesh_min: 45 , 45 #Change coordinates to match your printer
+mesh_max: 270, 270 #Change coordinates to match your printer
+probe_count:4,4 #Change number of X,Y probe points
+algorithm: bicubic
+#fade_start: 1
+#fade_end: 10
+#fade_target: 0
+
+
+[safe_z_home]
+home_xy_position: 150,150# Change coordinates to the center of your print bed
+speed: 150
+z_hop: 10                 
+z_hop_speed: 10
+
+[virtual_sdcard]
+path: ~/gcode_files
+
+[stepper_x]
+step_pin: P2.2
+dir_pin: !P2.6
+enable_pin: !P2.1
+microsteps: 16
+rotation_distance: 80
+endstop_pin: P1.29
+position_endstop: -20
+position_min: -20
+position_max: 300
+homing_speed: 150
+
+[stepper_y]
+step_pin: P0.19
+dir_pin: !P0.20
+enable_pin: !P2.8
+microsteps: 16
+rotation_distance: 80
+endstop_pin: P1.28
+position_endstop: -6
+position_min: -6
+position_max: 300
+homing_speed: 150
+
+[stepper_z]
+step_pin: P0.22
+dir_pin: !P2.11
+enable_pin: !P0.21
+microsteps: 16
+rotation_distance: 16
+endstop_pin: P1.27
+endstop_pin: probe:z_virtual_endstop
+#position_endstop: 0
+position_min: -3
+position_max: 350
+
+[stepper_z1]
+step_pin: P1.15
+dir_pin: !P1.14
+enable_pin: !P1.16
+microsteps: 16
+rotation_distance: 16
+
+[extruder]
+step_pin: P2.13
+dir_pin: P0.11
+enable_pin: !P2.12
+microsteps: 16
+rotation_distance: 60.000  #33.500
+nozzle_diameter: 0.400
+filament_diameter: 1.750
+heater_pin: P2.7
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: P0.24
+#control: pid
+
+min_temp: 0
+max_temp: 250
+
+
+[heater_bed]
+heater_pin: P2.5
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: P0.25
+min_temp: 0
+max_temp: 100
+
+[fan]
+pin: P2.3
+
+[mcu]
+serial: /dev/serial/by-id/usb-Klipper_lpc1768_1530010C81A0C895E53F4161C12000F5-if00
+
+[printer]
+kinematics: cartesian
+max_velocity: 150
+max_accel: 1000
+max_z_velocity: 10
+max_z_accel: 100
+
+
+
+######################################################################
+# Fysetc Mini 12864Panel v2.1 (with neopixel backlight leds)
+######################################################################
+
+[display]
+lcd_type: uc1701
+cs_pin: EXP1_3
+a0_pin: EXP1_4
+rst_pin: EXP1_5
+contrast: 63
+encoder_pins: ^EXP2_5, ^EXP2_3
+click_pin: ^!EXP1_2
+## Some micro-controller boards may require an spi bus to be specified:
+#spi_bus: spi
+## Alternatively, some micro-controller boards may work with software spi:
+#spi_software_miso_pin: EXP2_1
+#spi_software_mosi_pin: EXP2_6
+#spi_software_sclk_pin: EXP2_2
+
+#[output_pin beeper]
+#pin: EXP1_1
+
+[neopixel fysetc_mini12864]
+pin: EXP1_6
+chain_count: 3
+color_order: RGB
+initial_RED: 0.4
+initial_GREEN: 0.4
+initial_BLUE: 0.4
+
+
+[board_pins]
+aliases:
+    # EXP1 header
+    EXP1_1=P1.30, EXP1_3=P1.18, EXP1_5=P1.20, EXP1_7=P1.22, EXP1_9=<GND>,
+    EXP1_2=P0.28, EXP1_4=P1.19, EXP1_6=P1.21, EXP1_8=P1.23, EXP1_10=<5V>,
+    # EXP2 header
+    EXP2_1=P0.17, EXP2_3=P3.26, EXP2_5=P3.25, EXP2_7=P1.31, EXP2_9=<GND>,
+    EXP2_2=P0.15, EXP2_4=P0.16, EXP2_6=P0.18, EXP2_8=<RST>, EXP2_10=<NC>
+    # Pins EXP2_1, EXP2_6, EXP2_2 are also MISO, MOSI, SCK of bus "ssp0"
+
+# See the sample-lcd.cfg file for definitions of common LCD displays.
+
+
+
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+
+
+
+#####################################################################
+#   Nozzle Clean and Purge Bucket
+#####################################################################    
+[gcode_macro CLEAN_NOZZLE]
+variable_start_x: 0
+variable_start_y: 150
+variable_start_z: 2.5
+variable_wipe_dist: -15
+variable_wipe_qty: 5
+variable_wipe_spd: 50
+variable_raise_distance: 10
+
+gcode:
+ {% if "xyz" not in printer.toolhead.homed_axes %}
+   G28
+ {% endif %}
+ 
+ G90                                            ; absolute positioning
+ ## Move nozzle to start position
+ G1 X{start_x} Y{start_y} F6000
+ G1 Z{start_z} F1500
+
+ ## Wipe nozzle
+ {% for wipes in range(1, (wipe_qty + 1)) %}
+   G1 X{start_x + wipe_dist} F{wipe_spd * 60}
+   G1 X{start_x} F{wipe_spd * 60}
+ {% endfor %}
+
+ ## Raise nozzle
+ G1 Z{raise_distance}
+
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+
+
+
+[gcode_macro BED_MESH_CALIBRATE]
+rename_existing: BED_MESH_CALIBRATE_BASE
+; gcode parameters
+variable_parameter_AREA_START : 0,0
+variable_parameter_AREA_END : 0,0
+; the clearance between print area and probe area 
+variable_mesh_area_offset : 5.0
+; number of sample per probe point
+variable_probe_samples : 2
+; minimum probe count
+variable_min_probe_count : 4
+; scale up the probe count, should be 1.0 ~ < variable_max_probe_count/variable_min_probe_count
+variable_probe_count_scale_factor : 1.0
+; enable preference index
+variable_enable_reference_index : False
+gcode:
+    {% if params.AREA_START and params.AREA_END %}
+        {% set bedMeshConfig = printer["configfile"].config["bed_mesh"] %}
+        {% set safe_min_x = bedMeshConfig.mesh_min.split(",")[0]|float %}
+        {% set safe_min_y = bedMeshConfig.mesh_min.split(",")[1]|float %}
+        {% set safe_max_x = bedMeshConfig.mesh_max.split(",")[0]|float %}
+        {% set safe_max_y = bedMeshConfig.mesh_max.split(",")[1]|float %}
+
+        {% set area_min_x = params.AREA_START.split(",")[0]|float %}
+	{% set area_min_y = params.AREA_START.split(",")[1]|float %}
+	{% set area_max_x = params.AREA_END.split(",")[0]|float %}
+	{% set area_max_y = params.AREA_END.split(",")[1]|float %}
+
+	{% if bedMeshConfig.probe_count.split(",")|length == 2 %}
+            {% set meshPointX = bedMeshConfig.probe_count.split(",")[0]|int %}
+            {% set meshPointY = bedMeshConfig.probe_count.split(",")[1]|int %}
+        {% else %}
+            {% set meshPointX = bedMeshConfig.probe_count.split(",")[0]|int %}
+            {% set meshPointY = bedMeshConfig.probe_count.split(",")[0]|int %}
+        {% endif %}
+
+	{% set meshMaxPointX = meshPointX %}
+	{% set meshMaxPointY = meshPointY %}
+
+
+        {% if (area_min_x < area_max_x) and (area_min_y < area_max_y) %}
+            {% if area_min_x - mesh_area_offset >=  safe_min_x %}
+                {% set area_min_x = area_min_x - mesh_area_offset %}
+            {% else %}
+                {% set area_min_x = safe_min_x %}
+            {% endif %}
+
+            {% if area_min_y - mesh_area_offset >=  safe_min_y %}
+                {% set area_min_y = area_min_y - mesh_area_offset %}
+            {% else %}
+                {% set area_min_y = safe_min_y %}
+            {% endif %}
+
+            {% if area_max_x + mesh_area_offset <=  safe_max_x %}
+                {% set area_max_x = area_max_x + mesh_area_offset %}
+            {% else %}
+                {% set area_max_x = safe_max_x %}
+            {% endif %}
+
+            {% if area_max_y + mesh_area_offset <=  safe_max_y %}
+                {% set area_max_y = area_max_y + mesh_area_offset %}
+            {% else %}
+                {% set area_max_y = safe_max_y %}
+            {% endif %}
+
+            {% set meshPointX = (meshPointX * (area_max_x - area_min_x) / (safe_max_x - safe_min_x) * probe_count_scale_factor)|round(0)|int %}
+            {% if meshPointX < min_probe_count %}
+                {% set meshPointX = min_probe_count %}
+            {% endif %}
+	    {% if meshPointX > meshMaxPointX %}
+                {% set meshPointX = meshMaxPointX %}
+            {% endif %}
+
+            {% set meshPointY = (meshPointY * (area_max_y -area_min_y ) / (safe_max_y - safe_min_y) * probe_count_scale_factor )|round(0)|int %}
+            {% if meshPointY < min_probe_count %}
+                {% set meshPointY = min_probe_count %}
+            {% endif %}
+	    {% if meshPointY > meshMaxPointY %}
+                {% set meshPointY = meshMaxPointY %}
+            {% endif %}
+
+            {% set algorithm = "bicubic" %}
+	    {% if "algorithm" in bedMeshConfig %}
+	        {% set algorithm = bedMeshConfig.algorithm %}
+            {% endif %}
+            {% if meshPointX >=7 or meshPointY >=7 %}
+                {% set algorithm = "bicubic" %}
+            {% endif %}
+
+            {% if enable_reference_index %}
+                {% set referenceIndex = (meshPointX * meshPointY / 2 - 1 )|round(0)|int %}
+                BED_MESH_CALIBRATE_BASE mesh_min={area_min_x},{area_min_y} mesh_max={area_max_x},{area_max_y} probe_count={meshPointX},{meshPointY} samples={probe_samples|int} algorithm={algorithm} relative_reference_index={referenceIndex}
+            {% else %}
+                BED_MESH_CALIBRATE_BASE mesh_min={area_min_x},{area_min_y} mesh_max={area_max_x},{area_max_y} probe_count={meshPointX},{meshPointY} samples={probe_samples|int} algorithm={algorithm}
+            {% endif %}
+        {% else %}
+            BED_MESH_CALIBRATE_BASE
+        {% endif %}
+    {% else %}
+        BED_MESH_CALIBRATE_BASE
+    {% endif %}
+
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+
+
+
+
+
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#*# <---------------------- SAVE_CONFIG ---------------------->
+#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+#*#
+#*# [extruder]
+#*# control = pid
+#*# pid_kp = 29.512
+#*# pid_ki = 1.682
+#*# pid_kd = 129.483
+#*#
+#*# [heater_bed]
+#*# control = pid
+#*# pid_kp = 64.743
+#*# pid_ki = 0.614
+#*# pid_kd = 1706.784
+#*#
+#*# [stepper_z]
+#*# position_endstop = -0.620
+#*#
+#*# [bltouch]
+#*# z_offset = 2.000
+#*#
+#*# [bed_mesh pei]
+#*# version = 1
+#*# points =
+#*# 	0.115000, 0.025000, -0.080000, -0.135000, -0.255000, -0.395000
+#*# 	0.135000, 0.225000, 0.030000, -0.100000, -0.135000, -0.245000
+#*# 	0.145000, 0.270000, 0.220000, 0.080000, -0.060000, -0.140000
+#*# 	0.125000, 0.265000, 0.270000, 0.150000, -0.105000, -0.160000
+#*# 	0.070000, 0.135000, -0.025000, -0.055000, -0.210000, -0.250000
+#*# 	-0.165000, -0.080000, -0.070000, -0.130000, -0.330000, -0.510000
+#*# tension = 0.2
+#*# min_x = 45.0
+#*# algo = bicubic
+#*# y_count = 6
+#*# mesh_y_pps = 2
+#*# min_y = 45.0
+#*# x_count = 6
+#*# max_y = 270.0
+#*# mesh_x_pps = 2
+#*# max_x = 270.0
+#*#
+#*# [bed_mesh default]
+#*# version = 1
+#*# points =
+#*# 	0.005000, -0.030000, -0.105000, -0.170000, -0.285000, -0.435000
+#*# 	0.120000, 0.195000, 0.010000, -0.100000, -0.140000, -0.255000
+#*# 	0.100000, 0.220000, 0.195000, 0.050000, -0.090000, -0.190000
+#*# 	0.040000, 0.195000, 0.240000, 0.115000, -0.135000, -0.200000
+#*# 	0.010000, 0.085000, -0.065000, -0.085000, -0.250000, -0.315000
+#*# 	-0.235000, -0.130000, -0.115000, -0.195000, -0.375000, -0.590000
+#*# tension = 0.2
+#*# min_x = 45.0
+#*# algo = bicubic
+#*# y_count = 6
+#*# mesh_y_pps = 2
+#*# min_y = 45.0
+#*# x_count = 6
+#*# max_y = 270.0
+#*# mesh_x_pps = 2
+#*# max_x = 270.0
