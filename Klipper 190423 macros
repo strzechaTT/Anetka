@@ -1,7 +1,8 @@
-# This file contains common pin mappings for the BIGTREETECH SKR V1.4
-# board. To use this config, the firmware should be compiled for the
-# LPC1768 or LPC1769(Turbo).
-# See docs/Config_Reference.md for a description of parameters.
+# This file contains common pin mappings for the Anet A8 Plus  BIGTREETECH SKR V1.4 + TMC2209
+# SKR CPU LPC1768 
+
+
+
 [bltouch]
 sensor_pin: P0.10 #Change pin to match your printer
 control_pin: P2.0  #Change pin to match your printer
@@ -25,11 +26,16 @@ algorithm: bicubic
 #fade_end: 10
 #fade_target: 0
 
+#[bed_screws]
+#screw1: 5,30
+#screw2: 285,30
+#screw3: 285,245
+#screw4: 5,245
 
 [safe_z_home]
-home_xy_position: 150,150# Change coordinates to the center of your print bed
+home_xy_position: 150,150
 speed: 150
-z_hop: 10                 
+z_hop: 5                 
 z_hop_speed: 10
 
 [virtual_sdcard]
@@ -89,7 +95,7 @@ filament_diameter: 1.750
 heater_pin: P2.7
 sensor_type: EPCOS 100K B57560G104F
 sensor_pin: P0.24
-#control: pid
+
 
 min_temp: 0
 max_temp: 250
@@ -205,7 +211,8 @@ gcode:
 #######################################################################################################################################################
 #######################################################################################################################################################
 
-
+# Bed Mesh Fast Calibrate
+# Only at the place of printing
 
 [gcode_macro BED_MESH_CALIBRATE]
 rename_existing: BED_MESH_CALIBRATE_BASE
