@@ -181,7 +181,7 @@ aliases:
 [gcode_macro CLEAN_NOZZLE]
 variable_start_x: 0
 variable_start_y: 150
-variable_start_z: 2.5
+variable_start_z: 0.5
 variable_wipe_dist: -15
 variable_wipe_qty: 5
 variable_wipe_spd: 50
