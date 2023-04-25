@@ -22,7 +22,7 @@ G1 X-15 Y150                                 ; szczotka
 G1 X0 Y150                                   ; szczotka 
 G1 X-15 Y150                                 ; szczotka 
 G1 X0 Y150                                   ; szczotka
-
+G1 X-15 Y150                                 ; szczotka
 
 
 G1 Z5 F5000 ; lift nozzle
